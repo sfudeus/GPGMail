@@ -104,6 +104,7 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 + (BOOL)isElCapitan;
 + (BOOL)isSierra;
 + (BOOL)isHighSierra;
++ (BOOL)isMojave;
 
 /**
  Schedules a message which should have rules applied.
@@ -186,6 +187,7 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 @property (readonly) NSCache *messageBodyDataLoadingCache;
 
 @property (readonly) BOOL allowDecryptionOfPotentiallyDangerousMessagesWithoutMDC;
+@property (readonly) BOOL shouldNotConvertPGPPartitionedMessages;
 
 @end
 

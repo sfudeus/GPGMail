@@ -93,62 +93,6 @@
 
 @end
 
-#import "LoadRemoteContentBannerViewController.h"
-
-@interface LoadRemoteContentBannerViewController_GPGMail : NSObject
-@end
-
-
-@implementation LoadRemoteContentBannerViewController_GPGMail
-
-- (BOOL)MAWantsDisplay {
-    BOOL wantsDisplay = [self MAWantsDisplay];
-    if(![self isMemberOfClass:NSClassFromString(@"LoadRemoteContentBannerViewController")]) {
-        return wantsDisplay;
-    }
-    if([(MUIWebDocument *)[(LoadRemoteContentBannerViewController *)self webDocument] isEncrypted]) {
-        return NO;
-    }
-    return wantsDisplay;
-}
-
-- (void)MA_hasBlockedRemoteContentDidChange:(BOOL)arg1 {
-    if([(MUIWebDocument *)[(LoadRemoteContentBannerViewController *)self webDocument] isEncrypted]) {
-        if([self respondsToSelector:@selector(loadRemoteContentButton)]) {
-            NSButton *loadRemoteContentButton = [(LoadRemoteContentBannerViewController *)self loadRemoteContentButton];
-            [loadRemoteContentButton setHidden:YES];
-            [loadRemoteContentButton setEnabled:NO];
-        }
-    }
-    else {
-        [self MA_hasBlockedRemoteContentDidChange:arg1];
-    }
-}
-
-@end
-
-#import "JunkMailBannerViewController.h"
-
-@interface JunkMailBannerViewController_GPGMail : NSObject
-@end
-
-@implementation JunkMailBannerViewController_GPGMail
-
-- (void)MAUpdateBannerContents {
-    [self MAUpdateBannerContents];
-    if(![self isMemberOfClass:NSClassFromString(@"JunkMailBannerViewController")]) {
-        return;
-    }
-    if([(MUIWebDocument *)[(LoadRemoteContentBannerViewController *)self webDocument] isEncrypted]) {
-        [[(LoadRemoteContentBannerViewController *)self loadRemoteContentButton] setHidden:YES];
-    }
-}
-
-@end
-
-
-
-
 @interface MUIWKWebViewController_GPGMail : NSObject
 
 - (id)representedObject;
@@ -258,7 +202,6 @@ decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
 
 @end
 
-
 @interface MessageViewer_GPGMail : NSObject
 
 @end
@@ -312,9 +255,24 @@ decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
 
 @end
 
-#import "GMSupportPlanAssistantWindowController.h"
+@interface MailApp_GPGMail : NSObject
 
-NSString * const kGMED = @"1$5$3$7:4:7-3-6§0§0";
+- (void)MATabView:(id)tabView didSelectTabViewItem:(nullable NSTabViewItem *)tabViewItem;
+
+@end
+
+@implementation MailApp_GPGMail
+
+- (void)MATabView:(id)tabView didSelectTabViewItem:(nullable NSTabViewItem *)tabViewItem {
+    [self MATabView:tabView didSelectTabViewItem:tabViewItem];
+    if([[[tabViewItem viewController] representedObject] isKindOfClass:[GPGMailPreferences class]]) {
+        [[[tabViewItem viewController] representedObject] willBeDisplayed];
+    }
+}
+
+@end
+
+#import "GMSupportPlanAssistantWindowController.h"
 
 @interface GPGMailBundle ()
 
@@ -334,6 +292,7 @@ NSString *gpgErrorIdentifier = @"^~::gpgmail-error-code::~^";
 static NSString * const kExpiredCheckKey = @"__gme3__";
 
 NSString * const kGMAllowDecryptionOfDangerousMessagesMissingMDCKey = @"GMAllowDecryptionOfDangerousMessagesMissingMDC";
+NSString * const kGMShouldNotConvertPGPPartitionedMessagesKey = @"GMShouldNotConvertPGPPartitionedMessagesKey";
 
 int GPGMailLoggingLevel = 0;
 static BOOL gpgMailWorks = NO;
@@ -465,7 +424,7 @@ static BOOL gpgMailWorks = NO;
         _messageRulesApplier = [[GMMessageRulesApplier alloc] init];
         
         [self setAllowDecryptionOfPotentiallyDangerousMessagesWithoutMDC:[[[GPGOptions sharedOptions] valueForKey:@"AllowDecryptionOfPotentiallyDangerousMessagesWithoutMDC"] boolValue]];
-        
+        [self setShouldNotConvertPGPPartitionedMessages:[[[GPGOptions sharedOptions] valueForKey:@"ShouldNotConvertPGPPartitionedMessages"] boolValue]];
         // Start the GPG checker.
         [self startGPGChecker];
         
@@ -491,6 +450,14 @@ static BOOL gpgMailWorks = NO;
 
 - (BOOL)allowDecryptionOfPotentiallyDangerousMessagesWithoutMDC {
     return [[self getIvar:kGMAllowDecryptionOfDangerousMessagesMissingMDCKey] boolValue];
+}
+
+- (void)setShouldNotConvertPGPPartitionedMessages:(BOOL)shouldConvertPGPPartitionedMessages {
+    [self setIvar:kGMShouldNotConvertPGPPartitionedMessagesKey value:@(shouldConvertPGPPartitionedMessages)];
+}
+
+- (BOOL)shouldNotConvertPGPPartitionedMessages {
+    return [[self getIvar:kGMShouldNotConvertPGPPartitionedMessagesKey] boolValue];
 }
 
 - (void)dealloc {
@@ -784,6 +751,14 @@ static BOOL gpgMailWorks = NO;
     return [info isOperatingSystemAtLeastVersion:requiredVersion];
 }
 
++ (BOOL)isMojave {
+    NSProcessInfo *info = [NSProcessInfo processInfo];
+    if(![info respondsToSelector:@selector(isOperatingSystemAtLeastVersion:)])
+        return NO;
+
+    NSOperatingSystemVersion requiredVersion = {10,14,0};
+    return [info isOperatingSystemAtLeastVersion:requiredVersion];
+}
 
 + (BOOL)hasPreferencesPanel {
     // LEOPARD Invoked on +initialize. Else, invoked from +registerBundle.

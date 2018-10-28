@@ -75,7 +75,6 @@ extern NSString * const kMessageSecurityFeaturesKey;
                 temporaryMimePart = *topLevelMimePart;
             }
             [temporaryMimePart setIvar:kMimePartAllowPGPProcessingKey value:@(YES)];
-            
             MCMessageBody *messageBody = [temporaryMimePart messageBody];
             [currentMessage setIvar:kMessageSecurityFeaturesKey value:[(MimePart_GPGMail *)temporaryMimePart securityFeatures]];
             *body = messageBody;
