@@ -97,21 +97,6 @@
                             <binding destination="-2" name="toolTip" keyPath="gpgStatusToolTip" previousBinding="853" id="854"/>
                         </connections>
                     </button>
-                    <button toolTip="If you've any other question." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1051">
-                        <rect key="frame" x="188" y="9" width="135" height="32"/>
-                        <buttonCell key="cell" type="push" title="Report Problem" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1053">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="openSupport:" target="-2" id="vFI-pm-2Op"/>
-                            <binding destination="-2" name="hidden" keyPath="isRegistered" id="Ort-IV-EhX">
-                                <dictionary key="options">
-                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                </dictionary>
-                            </binding>
-                        </connections>
-                    </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VxY-Gt-nbh">
                         <rect key="frame" x="193" y="293" width="140" height="18"/>
                         <buttonCell key="cell" type="check" title="Encrypt new emails" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="yJs-2y-8Cb">
@@ -233,47 +218,6 @@
                             <binding destination="-2" name="value" keyPath="registrationDescription" id="qwT-FI-GIL"/>
                         </connections>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="TUL-r9-9jA">
-                        <rect key="frame" x="192" y="45" width="57" height="14"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="14" id="wpZ-gy-cxa"/>
-                        </constraints>
-                        <textFieldCell key="cell" controlSize="small" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="###Code:" id="Y3i-38-m2b">
-                            <font key="font" metaFont="smallSystem"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                        <connections>
-                            <binding destination="-2" name="hidden" keyPath="isRegistered" id="oAP-kE-TvS">
-                                <dictionary key="options">
-                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                </dictionary>
-                            </binding>
-                            <binding destination="-2" name="value" keyPath="registrationCode" id="Xdb-Vx-r1Z"/>
-                        </connections>
-                    </textField>
-                    <button toolTip="If you've any other question." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lO8-KU-tpl">
-                        <rect key="frame" x="188" y="31" width="135" height="32"/>
-                        <buttonCell key="cell" type="push" title="Activate" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1at-HI-cYf">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="activateSupportPlan:" target="-2" id="lNy-8a-Dfv"/>
-                            <binding destination="-2" name="hidden" keyPath="isRegistered" id="1gw-aD-bzJ"/>
-                        </connections>
-                    </button>
-                    <button toolTip="If you've any other question." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dW7-T8-3kz">
-                        <rect key="frame" x="323" y="31" width="164" height="32"/>
-                        <buttonCell key="cell" type="push" title="Learn More" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Yjx-OU-Oxq">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="learnMore:" target="-2" id="EMk-7j-EiJ"/>
-                            <binding destination="-2" name="hidden" keyPath="isRegistered" id="L2p-7c-0eE"/>
-                        </connections>
-                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="VxY-Gt-nbh" secondAttribute="trailing" constant="16" id="1A5-7q-Q56"/>
